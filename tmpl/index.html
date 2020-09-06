@@ -5,82 +5,72 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.1/imagesloaded.pkgd.min.js"></script>
-
-	<!-- CSS GRID VERSION -->
+	<script src="./static/jquery.js"></script>
+	<script src="./static/imgLoader.js"></script>
 	<style>
-		.grid {
-			display: grid;
-			grid-gap: 10px;
-			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-			/* grid-auto-rows: 20px; */
-		}
-
-		/* Non-grid specific CSS */
 		body {
-			margin: 10px;
-			color: #374046;
-			background-color: #374046;
-			font-family: 'Open Sans Condensed', sans-serif;
-			font-size: 1.15em;
-			text-rendering: optimizeLegibility;
-			-webkit-font-smoothing: antialiased;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			min-height: 100vh;
+			justify-content: center;
+			/* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif */
+			font-family: "Jetbrains Mono", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+		}
+		.grid {
+			column-count: 4;
+			column-gap: 0.5em;
 		}
 
 		.item {
-			background-color: #ffffff;
-			padding: 4px;
-			max-width: 100%;
+			display: inline-block;
+			margin-bottom: 0.25em;
+			width: 100%;
 		}
 
-		.item>img {
-			width: 100%;
-			/* height: 100%; */
-
+		.loading {
+			align-self: center;
 		}
 	</style>
-
-	<script>
-
-		function resizeGridItem(item) {
-			grid = document.getElementsByClassName("grid")[0];
-			rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
-			rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
-			rowSpan = Math.ceil((item.querySelector('.content').getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
-			item.style.gridRowEnd = "span " + rowSpan;
-		}
-
-		function resizeAllGridItems() {
-			allItems = document.getElementsByClassName("item");
-			for (x = 0; x < allItems.length; x++) {
-				resizeGridItem(allItems[x]);
-			}
-		}
-
-		function resizeInstance(instance) {
-			item = instance.elements[0];
-			resizeGridItem(item);
-		}
-
-		window.onload = resizeAllGridItems();
-		window.addEventListener("resize", resizeAllGridItems);
-
-		allItems = document.getElementsByClassName("item");
-		for (x = 0; x < allItems.length; x++) {
-			imagesLoaded(allItems[x], resizeInstance);
-		}
-
-	</script>
 </head>
 
 <body>
+	<div class="loading">LOADING...</div>
 	<section class="grid">
 		{{range .Images}}
-		<div class="item">
-			<img src="/images/{{.}}"></img>
-		</div>
+		<img class="item" src="/images/{{.}}"></img>
 		{{end}}
 	</section>
 </body>
+
+
+	<script>
+		var els = { 
+			loading: document.querySelector(".loading"),
+			grid: document.querySelector(".grid")
+		}
+		els.grid.style.display = "none";
+		var imagesLoaded = false;
+
+		$('#grid').imagesLoaded()
+			.always(function (instance) {
+				imagesLoaded = true
+				setTimeout(() => {
+					els.grid.style.display = "block"
+					els.loading.style.display = "none";
+				}, 500)
+			})
+			.done(function (instance) {
+				console.log('all images successfully loaded');
+			})
+			.fail(function () {
+				console.log('all images loaded, at least one is broken');
+			})
+			.progress(function (instance, image) {
+				var result = image.isLoaded ? 'loaded' : 'broken';
+				console.log('image is ' + result + ' for ' + image.img.src);
+			});
+
+	</script>
 
 </html>

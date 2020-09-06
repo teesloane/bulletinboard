@@ -19,7 +19,7 @@ func loadFiles(files *[]string) filepath.WalkFunc {
 		}
 		// fmt.Print(filepath.Ext(path))
 		fileExt := filepath.Ext(path)
-		fmt.Print(info.Name())
+		// fmt.Print(info.Name())
 		if validImage[fileExt] {
 			*files = append(*files, info.Name())
 		}
@@ -52,9 +52,11 @@ func index(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 	fileServer := http.FileServer(http.Dir(folder))
+	staticServer := http.FileServer(http.Dir("./static"))
 
 	http.HandleFunc("/", index)
 	http.Handle("/images/", http.StripPrefix("/images", fileServer))
+	http.Handle("/static/", http.StripPrefix("/static", staticServer))
 	fmt.Print("Booting imgboard server. Visit localhost:8080.")
 	http.ListenAndServe(":8080", nil)
 }
