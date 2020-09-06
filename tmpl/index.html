@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.1/imagesloaded.pkgd.min.js"></script>
+
+	<!-- CSS GRID VERSION -->
+	<style>
+		.grid {
+			display: grid;
+			grid-gap: 10px;
+			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+			/* grid-auto-rows: 20px; */
+		}
+
+		/* Non-grid specific CSS */
+		body {
+			margin: 10px;
+			color: #374046;
+			background-color: #374046;
+			font-family: 'Open Sans Condensed', sans-serif;
+			font-size: 1.15em;
+			text-rendering: optimizeLegibility;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.item {
+			background-color: #ffffff;
+			padding: 4px;
+			max-width: 100%;
+		}
+
+		.item>img {
+			width: 100%;
+			/* height: 100%; */
+
+		}
+	</style>
+
+	<script>
+
+		function resizeGridItem(item) {
+			grid = document.getElementsByClassName("grid")[0];
+			rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+			rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+			rowSpan = Math.ceil((item.querySelector('.content').getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
+			item.style.gridRowEnd = "span " + rowSpan;
+		}
+
+		function resizeAllGridItems() {
+			allItems = document.getElementsByClassName("item");
+			for (x = 0; x < allItems.length; x++) {
+				resizeGridItem(allItems[x]);
+			}
+		}
+
+		function resizeInstance(instance) {
+			item = instance.elements[0];
+			resizeGridItem(item);
+		}
+
+		window.onload = resizeAllGridItems();
+		window.addEventListener("resize", resizeAllGridItems);
+
+		allItems = document.getElementsByClassName("item");
+		for (x = 0; x < allItems.length; x++) {
+			imagesLoaded(allItems[x], resizeInstance);
+		}
+
+	</script>
+</head>
+
+<body>
+	<section class="grid">
+		{{range .Images}}
+		<div class="item">
+			<img src="/images/{{.}}"></img>
+		</div>
+		{{end}}
+	</section>
+</body>
+
+</html>
