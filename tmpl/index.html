@@ -7,7 +7,9 @@
 	<title>Bulletin Board</title>
 	<script src="/static/jquery.js"></script>
 	<script src="/static/imgLoader.js"></script>
+	<script src="/static/tweakpane-1.5.4.min.js"></script>
 	<style>
+
 		body {
 			display: flex;
 			align-items: center;
@@ -17,6 +19,7 @@
 			justify-content: center;
 			font-family: "Jetbrains Mono", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 		}
+
 		.grid {
 			column-count: 4;
 			column-gap: 0.5em;
@@ -28,7 +31,7 @@
 		@media(max-width: 500px) { .grid { column-count: 1; } }
 
 		.item {
-			display: inline-block;
+			display: block;
 			margin-bottom: 0.25em;
 			width: 100%;
 		}
@@ -49,28 +52,59 @@
 </body>
 
 
-	<script>
-		var els = { 
-			loading: document.querySelector(".loading"),
-			grid: document.querySelector(".grid")
-		}
-		els.grid.style.display = "none";
-		var imagesLoaded = false;
+<script>
+	var els = {
+		loading: document.querySelector(".loading"),
+		grid: document.querySelector(".grid")
+	}
+	els.grid.style.display = "none";
+	var imagesLoaded = false;
 
-		$('#grid').imagesLoaded()
-			.always(function (instance) {
-			})
-			.done(function (instance) {
-				imagesLoaded = true
-				// setTimeout(() => {
-					els.grid.style.display = "block"
-					els.loading.style.display = "none";
-				// }, 500)
-				console.log('all images successfully loaded');
-			})
-			.fail(function () {
-				console.log('all images loaded, at least one is broken');
-			})
-	</script>
+	$('#grid').imagesLoaded()
+		.always(function (instance) {
+		})
+		.done(function (instance) {
+			imagesLoaded = true
+			// setTimeout(() => {
+			els.grid.style.display = "block"
+			els.loading.style.display = "none";
+			// }, 500)
+			console.log('all images successfully loaded');
+		})
+		.fail(function () {
+			console.log('all images loaded, at least one is broken');
+		})
+</script>
+
+<!-- Tweakpane stuff -->
+<script>
+	const pane = new Tweakpane();
+	const f1 = pane.addFolder({
+		title: "Bulletin Board Controls"
+	})
+	var PARAMS = {
+		columns: 4,
+		gutter: 8
+	};
+	// Columns
+	f1.addInput(PARAMS, 'columns', {step: 1, min: 0, max: 16}).on("change", (val) => {
+		var grid = document.querySelector(".grid")
+		PARAMS.columns = val
+		grid.style.columnCount = PARAMS.columns
+	})
+  // Gutter
+	f1.addInput(PARAMS, 'gutter', {step: 1, min: 0, max: 128}).on("change", (val) => {
+		var grid = document.querySelector(".grid")
+		var items = document.querySelectorAll(".item")
+		for(var i = 0; i < items.length; i++) {
+			items[i].style.marginBottom = PARAMS.gutter + "px"
+		}
+		PARAMS.gutter = val
+		grid.style.columnGap = PARAMS.gutter + "px"
+	})
+
+	// Handlers
+
+</script>
 
 </html>
