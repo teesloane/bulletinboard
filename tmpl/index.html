@@ -13,7 +13,6 @@
 		body {
 			display: flex;
 			align-items: center;
-			/* background: #333; */
 			flex-direction: column;
 			min-height: 100vh;
 			justify-content: center;
@@ -42,8 +41,11 @@
 	</style>
 </head>
 
+ <!--- MARKUP --------------------------------------------------------------->
+
 <body>
 	<div class="loading">LOADING...</div>
+
 	<section class="grid">
 		{{range .Images}}
 		<img class="item" src="/images/{{.}}"></img>
@@ -65,10 +67,8 @@
 		})
 		.done(function (instance) {
 			imagesLoaded = true
-			// setTimeout(() => {
 			els.grid.style.display = "block"
 			els.loading.style.display = "none";
-			// }, 500)
 			console.log('all images successfully loaded');
 		})
 		.fail(function () {
@@ -103,7 +103,6 @@
 		grid.style.columnGap = PARAMS.gutter + "px"
 	})
 
-	// Handlers
 
 </script>
 
