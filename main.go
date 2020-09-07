@@ -1,15 +1,21 @@
 package main
 
 import (
+	"bytes"
+	"flag"
 	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/markbates/pkger"
 )
 
 var validImage = map[string]bool{".jpg": true, ".png": true, ".webp": true, ".jpeg": true}
+var folder string
 
 // Load list of images in directory.
 func loadFiles(files *[]string) filepath.WalkFunc {
@@ -17,9 +23,7 @@ func loadFiles(files *[]string) filepath.WalkFunc {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// fmt.Print(filepath.Ext(path))
 		fileExt := filepath.Ext(path)
-		// fmt.Print(info.Name())
 		if validImage[fileExt] {
 			*files = append(*files, info.Name())
 		}
@@ -31,14 +35,18 @@ type indexPage struct {
 	Images []string
 }
 
-var folder = "/Users/tees/Desktop/futur_insp" // TODO: replace this with reading in the CWD
-
 func index(w http.ResponseWriter, req *http.Request) {
 	var imgFiles []string
 
-	temp, err := template.ParseFiles("tmpl/index.html")
+	buf := bytes.NewBuffer(nil)
+	f, _ := pkger.Open("/tmpl/index.html")
+	io.Copy(buf, f)
+	f.Close()
+	s := string(buf.Bytes())
+
+	temp, err := template.New("index").Parse(s)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("failed to get layout: ", err)
 	}
 
 	err = filepath.Walk(folder, loadFiles(&imgFiles))
@@ -51,12 +59,23 @@ func index(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+	// Set up folder of images to load
+	var err error
+	folder, err = os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+	// parse flag and overwrite folder if it exists.
+	bbPath := flag.String("path", folder, "Custom path to load images from.")
+	flag.Parse()
+	folder = *bbPath
+
 	fileServer := http.FileServer(http.Dir(folder))
-	staticServer := http.FileServer(http.Dir("./static"))
+	staticServer := http.FileServer(pkger.Dir("/static"))
 
 	http.HandleFunc("/", index)
 	http.Handle("/images/", http.StripPrefix("/images", fileServer))
-	http.Handle("/static/", http.StripPrefix("/static", staticServer))
-	fmt.Print("Booting imgboard server. Visit localhost:8080.")
+	http.Handle("/static/", http.StripPrefix("/static/", staticServer))
+	fmt.Print("Visit your bulletin board at: http://localhost:8080.")
 	http.ListenAndServe(":8080", nil)
 }

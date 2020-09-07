@@ -5,16 +5,16 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<script src="./static/jquery.js"></script>
-	<script src="./static/imgLoader.js"></script>
+	<script src="/static/jquery.js"></script>
+	<script src="/static/imgLoader.js"></script>
 	<style>
 		body {
 			display: flex;
 			align-items: center;
+			background: #333;
 			flex-direction: column;
 			min-height: 100vh;
 			justify-content: center;
-			/* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif */
 			font-family: "Jetbrains Mono", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 		}
 		.grid {
@@ -54,23 +54,18 @@
 
 		$('#grid').imagesLoaded()
 			.always(function (instance) {
-				imagesLoaded = true
-				setTimeout(() => {
-					els.grid.style.display = "block"
-					els.loading.style.display = "none";
-				}, 500)
 			})
 			.done(function (instance) {
+				imagesLoaded = true
+				// setTimeout(() => {
+					els.grid.style.display = "block"
+					els.loading.style.display = "none";
+				// }, 500)
 				console.log('all images successfully loaded');
 			})
 			.fail(function () {
 				console.log('all images loaded, at least one is broken');
 			})
-			.progress(function (instance, image) {
-				var result = image.isLoaded ? 'loaded' : 'broken';
-				console.log('image is ' + result + ' for ' + image.img.src);
-			});
-
 	</script>
 
 </html>
