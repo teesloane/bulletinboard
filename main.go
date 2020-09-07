@@ -76,6 +76,6 @@ func main() {
 	http.HandleFunc("/", index)
 	http.Handle("/images/", http.StripPrefix("/images", fileServer))
 	http.Handle("/static/", http.StripPrefix("/static/", staticServer))
-	fmt.Print("Visit your bulletin board at: http://localhost:8080.")
+	fmt.Print("Visit your bulletinboard at: http://localhost:8080.")
 	http.ListenAndServe(":8080", nil)
 }
