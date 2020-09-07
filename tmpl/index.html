@@ -4,14 +4,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Bulletin Board</title>
 	<script src="/static/jquery.js"></script>
 	<script src="/static/imgLoader.js"></script>
 	<style>
 		body {
 			display: flex;
 			align-items: center;
-			background: #333;
+			/* background: #333; */
 			flex-direction: column;
 			min-height: 100vh;
 			justify-content: center;
@@ -20,7 +20,12 @@
 		.grid {
 			column-count: 4;
 			column-gap: 0.5em;
+			padding: 8px;
 		}
+
+		@media(max-width: 1200px) { .grid { column-count: 3; } }
+		@media(max-width: 800px) { .grid { column-count: 2; } }
+		@media(max-width: 500px) { .grid { column-count: 1; } }
 
 		.item {
 			display: inline-block;
