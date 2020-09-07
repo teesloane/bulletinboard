@@ -5,17 +5,18 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bulletin Board</title>
+	<link rel="stylesheet" href="/static/styles.css">
+	<style></style>
+
 	<script src="/static/jquery.js"></script>
 	<script src="/static/imgLoader.js"></script>
 	<script src="/static/tweakpane-1.5.4.min.js"></script>
-	<link rel="stylesheet" href="/static/styles.css">
-	<style></style>
 </head>
 
 <!--- MARKUP --------------------------------------------------------------->
 
 <body>
-	<main>
+	<main class="main">
 		<div class="loading">loading...</div>
 
 		<!-- Loads tweakpane here -->
@@ -30,74 +31,94 @@
 			{{end}}
 		</section>
 	</main>
-</body>
 
+	<div role="dialog" class="image-dialog">
+		korok says hi	
+	</div>
 
-<!-- Handle loading / displaying of images -->
-<script>
+	<!-- Handle loading / displaying of images -->
+	<script>
+		const dqs = (s) => document.querySelector(s)
+		const gridItemClass = 'item';
 
-	const dqs = (s) => document.querySelector(s)
-
-	var els = {
-		loading: document.querySelector(".loading"),
-		grid: document.querySelector(".grid")
-	}
-	els.grid.style.display = "none";
-	var imagesLoaded = false;
-
-	$('#grid').imagesLoaded()
-		.always(function (instance) {
-		})
-		.done(function (instance) {
-			imagesLoaded = true
-			els.grid.style.display = "block"
-			els.loading.style.display = "none";
-			console.log('all images successfully loaded');
-		})
-		.fail(function () {
-			console.log('all images loaded, at least one is broken');
-		})
-</script>
-
-<!-- Tweakpane stuff -->
-<script>
-	const pane = new Tweakpane({
-		container: document.querySelector(".customize")
-	});
-
-	//  Tweakpane show/hide
-	const customize = document.querySelector(".customize")
-	const customizeBtn = dqs(".toggle-customize")
-	customizeBtn.addEventListener("click", (e) => {
-		customize.classList.toggle("customize-open")
-		customizeBtn.classList.toggle("btn-icon-active")
-	})
-
-	const f1 = pane.addFolder({
-		title: "Bulletin Board Controls"
-	})
-	var PARAMS = {
-		columns: 4,
-		gutter: 8
-	};
-	// Columns
-	f1.addInput(PARAMS, 'columns', { step: 1, min: 0, max: 16 }).on("change", (val) => {
-		var grid = document.querySelector(".grid")
-		PARAMS.columns = val
-		grid.style.columnCount = PARAMS.columns
-	})
-	// Gutter
-	f1.addInput(PARAMS, 'gutter', { step: 1, min: 0, max: 128 }).on("change", (val) => {
-		var grid = document.querySelector(".grid")
-		var items = document.querySelectorAll(".item")
-		for (var i = 0; i < items.length; i++) {
-			items[i].style.marginBottom = PARAMS.gutter + "px"
+		var els = {
+			loading: document.querySelector(".loading"),
+			grid: document.querySelector(".grid")
 		}
-		PARAMS.gutter = val
-		grid.style.columnGap = PARAMS.gutter + "px"
-	})
+		els.grid.style.display = "none";
+		var imagesLoaded = false;
 
+		$('#grid').imagesLoaded()
+			.always(function (instance) {
+			})
+			.done(function (instance) {
+				imagesLoaded = true
+				els.grid.style.display = "block"
+				els.loading.style.display = "none";
+				console.log('all images successfully loaded');
+			})
+			.fail(function () {
+				console.log('all images loaded, at least one is broken');
+			})
 
-</script>
+	// Handle Lightbox
+	/**
+	 * - create a slot element for the current photo
+	 * - on click of any photo -> set the element to visible, with a source of the clicked photo
+	 * - make it closeable (either `esc` or an `x` or clicking on it again?)
+	 * - possible actions - "show in finder/explorer" (would need endpoint for handling that async with Golang.)
+	 * */
 
+	// add event listener to body. Check if image el is clicked -- if yes, show in modal. If not, return.
+	els.grid.addEventListener('click', (e) => {
+		if (
+			e.target.tagName === 'IMG'
+			&& e.target.className === gridItemClass
+		) {
+			console.log("it's an image!");
+			console.log(e.target);
+		}
+	});
+			
+	</script>
+
+	<!-- Tweakpane stuff -->
+	<script>
+		const pane = new Tweakpane({
+			container: document.querySelector(".customize")
+		});
+
+		//  Tweakpane show/hide
+		const customize = document.querySelector(".customize")
+		const customizeBtn = dqs(".toggle-customize")
+		customizeBtn.addEventListener("click", (e) => {
+			customize.classList.toggle("customize-open")
+			customizeBtn.classList.toggle("btn-icon-active")
+		})
+
+		const f1 = pane.addFolder({
+			title: "Bulletin Board Controls"
+		})
+		var PARAMS = {
+			columns: 4,
+			gutter: 8
+		};
+		// Columns
+		f1.addInput(PARAMS, 'columns', { step: 1, min: 0, max: 16 }).on("change", (val) => {
+			var grid = document.querySelector(".grid")
+			PARAMS.columns = val
+			grid.style.columnCount = PARAMS.columns
+		})
+		// Gutter
+		f1.addInput(PARAMS, 'gutter', { step: 1, min: 0, max: 128 }).on("change", (val) => {
+			var grid = document.querySelector(".grid")
+			var items = document.querySelectorAll(".item")
+			for (var i = 0; i < items.length; i++) {
+				items[i].style.marginBottom = PARAMS.gutter + "px"
+			}
+			PARAMS.gutter = val
+			grid.style.columnGap = PARAMS.gutter + "px"
+		})
+	</script>
+</body>
 </html>
