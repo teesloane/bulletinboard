@@ -45,42 +45,51 @@ main {
   align-self: center;
 }
 
-.dialog {
-  /* position: fixed;
-  top: 50%;
-  /* left: 25%; */
-  /* transform: translateY(-50%); */
-  /* background: white; */
-  /* height: auto; */
-  /* max-width: 100%; */
-  /* z-index: 90000; */
-  /* margin: 0 auto; */
-  /* box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3); */
-  /* width: 70%;  */
-
-
+.dialog-container {
   position: fixed;
-  top: 25%;
-  /* left: 50%; */
-  transform: translate3d(-50%, -50%);
-  background: white;
-  height: auto;
-  max-width: 100%;
-  z-index: 90000;
-  margin: 0 auto;
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-  width: 80%;
-  height: 80vh;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
   display: flex;
   align-content: center;
   justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.hide {
+  display: none;
+}
+
+.dialog {
+  /* background: white; */
+  /* box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3); */
   padding: 16px;
+  display: flex;
+  justify-content: center;
+  width: 85%;
+  height: 85%;
+  align-self: center;
+}
+
+.closeDialog {
+  border-radius: 0;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: white;
+  color: #333;
+  z-index: 20000000000;
 }
 
 .dialogImg {
   width: auto;
   max-width: 100%;
-  height: 100%;
+  max-height: 100%;
+  border: 4px solid white;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.3);
 }
 
 .customize {
