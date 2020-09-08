@@ -86,10 +86,10 @@ main {
   left: -400px;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
   height: 100%;
   padding: 8px;
-  transition: all .5s cubic-bezier(.645, .045, .355, 1);
+  transition: all .75s cubic-bezier(.645, .045, .355, 1);
 }
 
 .customize-open {
@@ -139,15 +139,12 @@ main {
 }
 
 .btn-icon-active {
-  /* background: #6bb4d5; */
-  color: white;
-  border-color: white;
-}
-
-.btn-icon-active:hover {
-  /* background: #6bb4d5; */
-  color: white;
-  border-color: #ededed;
+  border-color: #65abf6;
+  animation-name: border-animation;
+  animation-duration: 4s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  opacity: 1;
 }
 
 .toggle-customize {

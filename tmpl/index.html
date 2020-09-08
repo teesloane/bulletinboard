@@ -80,6 +80,13 @@
 	 * */
 
 	// add event listener to body. Check if image el is clicked -- if yes, show in modal. If not, return.
+	function closeDialog() {
+			els.dialogContainer.classList.add('hide');
+			els.closeDialog.classList.add("hide")
+			els.dialogImg.src = ""
+
+	}
+
 	document.body.addEventListener('click', (e) => {
 		if (
 			e.target.tagName === 'IMG'
@@ -89,15 +96,20 @@
 			els.dialogImg.src = e.target.src
 			els.closeDialog.classList.remove("hide")
 		} else {
-			els.dialogContainer.classList.add('hide');
-			els.closeDialog.classList.add("hide")
-			els.dialogImg.src = ""
+			closeDialog()
 		}
 	});
 
 	els.closeDialog.addEventListener('click', () => {
-		els.dialogContainer.classList.add('hide');
+		closeDialog()
 	});
+
+	document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    if (evt.keyCode == 27) {
+			closeDialog()
+    }
+};
 			
 	</script>
 
