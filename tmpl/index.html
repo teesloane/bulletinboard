@@ -35,7 +35,6 @@
 	<div role="dialog" class="dialog-container hide">
 		<div class="dialog">
 			<button class="closeDialog">close</button>
-			<!-- TODO tyler - should only displa if photo is in it. -->
 			<img class="dialogImg" src=""/>
 		</div>
 	</div>
@@ -117,7 +116,8 @@
 		})
 		var PARAMS = {
 			columns: 4,
-			gutter: 8
+			gutter: 8,
+			background: {r: 255, g: 255, b: 255},
 		};
 		// Columns
 		f1.addInput(PARAMS, 'columns', { step: 1, min: 0, max: 16 }).on("change", (val) => {
@@ -125,6 +125,7 @@
 			PARAMS.columns = val
 			grid.style.columnCount = PARAMS.columns
 		})
+
 		// Gutter
 		f1.addInput(PARAMS, 'gutter', { step: 1, min: 0, max: 128 }).on("change", (val) => {
 			var grid = document.querySelector(".grid")
@@ -134,6 +135,13 @@
 			}
 			PARAMS.gutter = val
 			grid.style.columnGap = PARAMS.gutter + "px"
+		})
+		// Background colour
+		f1.addInput(PARAMS, 'background').on("change", (val) => {
+			var grid = document.querySelector(".grid")
+			PARAMS.background = val
+			let x = PARAMS.background
+			grid.style.backgroundColor = `rgb(${x.r}, ${x.b}, ${x.g})`
 		})
 	</script>
 </body>

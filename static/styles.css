@@ -55,7 +55,7 @@ main {
   display: flex;
   align-content: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.8);
   pointer-events: none;
 }
 
@@ -64,14 +64,12 @@ main {
 }
 
 .dialog {
-  /* background: white; */
-  /* box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3); */
   padding: 16px;
   display: flex;
   justify-content: center;
-  width: 85%;
-  height: 85%;
-  align-self: center;
+  width: auto;
+  height: 85vh;
+  align-self: center; 
 }
 
 .closeDialog {
@@ -85,8 +83,9 @@ main {
 }
 
 .dialogImg {
-  width: auto;
+  width: 100%;
   max-width: 100%;
+  height: auto;
   max-height: 100%;
   border: 4px solid white;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.3);
