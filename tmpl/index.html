@@ -6,19 +6,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bulletin Board</title>
 	<link rel="stylesheet" href="/static/styles.css">
-	<style></style>
-
-	<script src="/static/jquery.js"></script>
-	<script src="/static/imgLoader.js"></script>
-	<script src="/static/tweakpane-1.5.4.min.js"></script>
+	<script src="/static/vendor/tweakpane-1.5.4.min.js"></script>
 </head>
 
 <!--- MARKUP --------------------------------------------------------------->
 
 <body>
 	<main class="main">
-		<div class="loading">loading...</div>
-
 		<!-- Loads tweakpane here -->
 		<section class="customize"></section>
 		<button class="btn-icon btn-tools toggle-customize">
@@ -39,7 +33,7 @@
 
 	<div role="dialog" class="dialog-container hide">
 		<div class="dialog">
-			<img class="dialogImg" src=""/>
+			<img class="dialogImg" src="" />
 		</div>
 	</div>
 
@@ -49,68 +43,42 @@
 		const gridItemClass = 'item';
 
 		var els = {
-			loading: document.querySelector(".loading"),
 			grid: document.querySelector(".grid"),
 			dialogContainer: dqs('.dialog-container'),
 			dialogImg: dqs(".dialogImg"),
 			closeDialog: dqs('.toggle-close')
 		}
-		els.grid.style.display = "none";
-		var imagesLoaded = false;
 
-		$('#grid').imagesLoaded()
-			.always(function (instance) {
-			})
-			.done(function (instance) {
-				imagesLoaded = true
-				els.grid.style.display = "block"
-				els.loading.style.display = "none";
-				console.log('all images successfully loaded');
-			})
-			.fail(function () {
-				console.log('all images loaded, at least one is broken');
-			})
-
-	// Handle Lightbox
-	/**
-	 * - create a slot element for the current photo
-	 * - on click of any photo -> set the element to visible, with a source of the clicked photo
-	 * - make it closeable (either `esc` or an `x` or clicking on it again?)
-	 * - possible actions - "show in finder/explorer" (would need endpoint for handling that async with Golang.)
-	 * */
-
-	// add event listener to body. Check if image el is clicked -- if yes, show in modal. If not, return.
-	function closeDialog() {
+		function closeDialog() {
 			els.dialogContainer.classList.add('hide');
 			els.closeDialog.classList.add("hide")
 			els.dialogImg.src = ""
-
-	}
-
-	document.body.addEventListener('click', (e) => {
-		if (
-			e.target.tagName === 'IMG'
-			&& e.target.className === gridItemClass
-		) {
-			els.dialogContainer.classList.remove('hide');
-			els.dialogImg.src = e.target.src
-			els.closeDialog.classList.remove("hide")
-		} else {
-			closeDialog()
 		}
-	});
 
-	els.closeDialog.addEventListener('click', () => {
-		closeDialog()
-	});
+		document.body.addEventListener('click', (e) => {
+			if (
+				e.target.tagName === 'IMG'
+				&& e.target.className === gridItemClass
+			) {
+				els.dialogContainer.classList.remove('hide');
+				els.dialogImg.src = e.target.src
+				els.closeDialog.classList.remove("hide")
+			} else {
+				closeDialog()
+			}
+		});
 
-	document.onkeydown = function(evt) {
-    evt = evt || window.event;
-    if (evt.keyCode == 27) {
+		els.closeDialog.addEventListener('click', () => {
 			closeDialog()
-    }
-};
-			
+		});
+
+		document.onkeydown = function (evt) {
+			evt = evt || window.event;
+			if (evt.keyCode == 27) {
+				closeDialog()
+			}
+		};
+
 	</script>
 
 	<!-- Tweakpane stuff -->
@@ -133,7 +101,7 @@
 		var PARAMS = {
 			columns: 4,
 			gutter: 8,
-			background: {r: 255, g: 255, b: 255},
+			background: { r: 255, g: 255, b: 255 },
 		};
 		// Columns
 		f1.addInput(PARAMS, 'columns', { step: 1, min: 0, max: 16 }).on("change", (val) => {
@@ -161,4 +129,5 @@
 		})
 	</script>
 </body>
+
 </html>
