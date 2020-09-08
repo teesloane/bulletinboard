@@ -60,7 +60,7 @@ main {
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
 
 .dialog {
@@ -69,17 +69,7 @@ main {
   justify-content: center;
   width: auto;
   height: 85vh;
-  align-self: center; 
-}
-
-.closeDialog {
-  border-radius: 0;
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  background: white;
-  color: #333;
-  z-index: 20000000000;
+  align-self: center;
 }
 
 .dialogImg {
@@ -109,28 +99,37 @@ main {
 .btn-icon {
   -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, .015);
   background-image: none;
-  background: rgb(255, 255, 255);
+  background: #fbfbfb;
   border-radius: 50%;
-  border: 0.15em solid #d9d9d9;
-  bottom: 16px;
+  border: 0.15em solid rgb(251, 251, 251);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.167);
   color: rgba(0, 0, 0, .85);
   cursor: pointer;
   font-size: 14px;
   font-weight: 400;
-  min-width: 48px;
-  min-height: 48px;
-  left: 16px;
-  position: fixed;
+  min-width: 40px;
+  min-height: 40px;
   text-align: center;
-  transition: all .2s cubic-bezier(.645, .045, .355, 1);
+  transition: all .5s cubic-bezier(.645, .045, .355, 1);
   user-select: none;
   opacity: 0.3;
 }
 
+@keyframes border-animation {
+  0%   {border-color: #65abf6;}
+  25%  {border-color: hsl(196, 50%, 43%);}
+  50%  {border-color: rgb(199, 120, 239);}
+  100% {border-color: #dedc71;}
+}
+
 .btn-icon:hover {
   border-color: #65abf6;
+  animation-name: border-animation;
+  animation-duration: 4s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
   opacity: 1;
+  
 }
 
 .btn-icon:active {
@@ -149,4 +148,21 @@ main {
   /* background: #6bb4d5; */
   color: white;
   border-color: #ededed;
+}
+
+.toggle-customize {
+  left: 16px;
+  position: fixed;
+  bottom: 16px;
+}
+
+.toggle-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20000000000;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

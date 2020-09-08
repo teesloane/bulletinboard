@@ -21,9 +21,14 @@
 
 		<!-- Loads tweakpane here -->
 		<section class="customize"></section>
-		<button class="btn-icon toggle-customize">
+		<button class="btn-icon btn-tools toggle-customize">
 			<img width="20" height="20" src="/static/tool.svg" alt="">
 		</button>
+
+		<button class="btn-icon toggle-close hide">
+			<img width="20" height="20" src="/static/x-circle.svg" alt="">
+		</button>
+
 
 		<section class="grid">
 			{{range .Images}}
@@ -34,7 +39,6 @@
 
 	<div role="dialog" class="dialog-container hide">
 		<div class="dialog">
-			<button class="closeDialog">close</button>
 			<img class="dialogImg" src=""/>
 		</div>
 	</div>
@@ -49,7 +53,7 @@
 			grid: document.querySelector(".grid"),
 			dialogContainer: dqs('.dialog-container'),
 			dialogImg: dqs(".dialogImg"),
-			closeDialog: dqs('.closeDialog')
+			closeDialog: dqs('.toggle-close')
 		}
 		els.grid.style.display = "none";
 		var imagesLoaded = false;
@@ -82,16 +86,16 @@
 			&& e.target.className === gridItemClass
 		) {
 			els.dialogContainer.classList.remove('hide');
-			// state.dialogImage = e.target.src
 			els.dialogImg.src = e.target.src
+			els.closeDialog.classList.remove("hide")
 		} else {
 			els.dialogContainer.classList.add('hide');
+			els.closeDialog.classList.add("hide")
 			els.dialogImg.src = ""
 		}
 	});
 
 	els.closeDialog.addEventListener('click', () => {
-		console.log('close?');
 		els.dialogContainer.classList.add('hide');
 	});
 			
