@@ -9,7 +9,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 
 	"github.com/markbates/pkger"
 )
@@ -29,6 +31,24 @@ func loadFiles(files *[]string) filepath.WalkFunc {
 		}
 		return nil
 	}
+}
+
+// OpenInBrowser opens a local url in the browser by running a os-dependant command
+func OpenInBrowser(fileOrURL string) error {
+	var cmd string
+	var args []string
+
+	switch runtime.GOOS {
+	case "windows":
+		cmd = "cmd"
+		args = []string{"/c", "start"}
+	case "darwin":
+		cmd = "open"
+	default: // "linux", "freebsd", "openbsd", "netbsd"
+		cmd = "xdg-open"
+	}
+	args = append(args, fileOrURL)
+	return exec.Command(cmd, args...).Start()
 }
 
 type indexPage struct {
@@ -70,12 +90,15 @@ func main() {
 	flag.Parse()
 	folder = *bbPath
 
+	// Setup file servers and handlers.
 	fileServer := http.FileServer(http.Dir(folder))
 	staticServer := http.FileServer(pkger.Dir("/static"))
-
 	http.HandleFunc("/", index)
 	http.Handle("/images/", http.StripPrefix("/images", fileServer))
 	http.Handle("/static/", http.StripPrefix("/static/", staticServer))
-	fmt.Print("Visit your bulletinboard at: http://localhost:8080.")
+
+	// Launch and serve.
+	fmt.Print("Running bulletin board. Visit: http://localhost:8080.")
+	OpenInBrowser("http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
