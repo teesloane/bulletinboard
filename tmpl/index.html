@@ -9,8 +9,6 @@
 	<script src="/static/vendor/tweakpane-1.5.4.min.js"></script>
 </head>
 
-<!--- MARKUP --------------------------------------------------------------->
-
 <body>
 	<main class="main">
 		<!-- Loads tweakpane here -->
@@ -22,7 +20,6 @@
 		<button class="btn-icon toggle-close hide">
 			<img width="20" height="20" src="/static/x-circle.svg" alt="">
 		</button>
-
 
 		<section class="grid">
 			{{range .Images}}
@@ -37,97 +34,7 @@
 		</div>
 	</div>
 
-	<!-- Handle loading / displaying of images -->
-	<script>
-		const dqs = (s) => document.querySelector(s)
-		const gridItemClass = 'item';
-
-		var els = {
-			grid: document.querySelector(".grid"),
-			dialogContainer: dqs('.dialog-container'),
-			dialogImg: dqs(".dialogImg"),
-			closeDialog: dqs('.toggle-close')
-		}
-
-		function closeDialog() {
-			els.dialogContainer.classList.add('hide');
-			els.closeDialog.classList.add("hide")
-			els.dialogImg.src = ""
-		}
-
-		document.body.addEventListener('click', (e) => {
-			if (
-				e.target.tagName === 'IMG'
-				&& e.target.className === gridItemClass
-			) {
-				els.dialogContainer.classList.remove('hide');
-				els.dialogImg.src = e.target.src
-				els.closeDialog.classList.remove("hide")
-			} else {
-				closeDialog()
-			}
-		});
-
-		els.closeDialog.addEventListener('click', () => {
-			closeDialog()
-		});
-
-		document.onkeydown = function (evt) {
-			evt = evt || window.event;
-			if (evt.keyCode == 27) {
-				closeDialog()
-			}
-		};
-
-	</script>
-
-	<!-- Tweakpane stuff -->
-	<script>
-		const pane = new Tweakpane({
-			container: document.querySelector(".customize")
-		});
-
-		//  Tweakpane show/hide
-		const customize = document.querySelector(".customize")
-		const customizeBtn = dqs(".toggle-customize")
-		customizeBtn.addEventListener("click", (e) => {
-			customize.classList.toggle("customize-open")
-			customizeBtn.classList.toggle("btn-icon-active")
-		})
-
-		const f1 = pane.addFolder({
-			title: "Bulletin Board Controls"
-		})
-		var PARAMS = {
-			columns: 4,
-			gutter: 8,
-			background: { r: 255, g: 255, b: 255 },
-		};
-		// Columns
-		f1.addInput(PARAMS, 'columns', { step: 1, min: 0, max: 16 }).on("change", (val) => {
-			var grid = document.querySelector(".grid")
-			PARAMS.columns = val
-			grid.style.columnCount = PARAMS.columns
-		})
-
-		// Gutter
-		f1.addInput(PARAMS, 'gutter', { step: 1, min: 0, max: 128 }).on("change", (val) => {
-			var grid = document.querySelector(".grid")
-			var items = document.querySelectorAll(".item")
-			for (var i = 0; i < items.length; i++) {
-				items[i].style.marginBottom = PARAMS.gutter + "px"
-			}
-			PARAMS.gutter = val
-			grid.style.columnGap = PARAMS.gutter + "px"
-		})
-		// Background colour
-		f1.addInput(PARAMS, 'background').on("change", (val) => {
-			var grid = document.querySelector(".grid")
-			PARAMS.background = val
-			let x = PARAMS.background
-			grid.style.backgroundColor = `rgb(${x.r}, ${x.b}, ${x.g})`
-		})
-	</script>
+	<script type="module" src="/static/js/main.js"></script>
 </body>
 
 </html>
