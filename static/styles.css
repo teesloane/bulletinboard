@@ -45,6 +45,24 @@ main {
   align-self: center;
 }
 
+.dialog {
+  position: fixed;
+  top: 50%;
+  /* left: 25%; */
+  transform: translateY(-50%);
+  /* background: white; */
+  height: auto;
+  max-width: 100%;
+  z-index: 90000;
+  /* margin: 0 auto; */
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+
+.dialogImg {
+  width: 100%;
+  height: auto;
+}
+
 .customize {
   position: fixed;
   left: -400px;

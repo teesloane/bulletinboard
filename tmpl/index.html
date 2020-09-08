@@ -32,8 +32,8 @@
 		</section>
 	</main>
 
-	<div role="dialog" class="image-dialog">
-		korok says hi	
+	<div role="dialog" class="dialog">
+		<img class="dialogImg" src=""/>
 	</div>
 
 	<!-- Handle loading / displaying of images -->
@@ -43,7 +43,8 @@
 
 		var els = {
 			loading: document.querySelector(".loading"),
-			grid: document.querySelector(".grid")
+			grid: document.querySelector(".grid"),
+			dialogImg: dqs(".dialogImg")
 		}
 		els.grid.style.display = "none";
 		var imagesLoaded = false;
@@ -75,8 +76,8 @@
 			e.target.tagName === 'IMG'
 			&& e.target.className === gridItemClass
 		) {
-			console.log("it's an image!");
-			console.log(e.target);
+			// state.dialogImage = e.target.src
+			els.dialogImg.src = e.target.src
 		}
 	});
 			
