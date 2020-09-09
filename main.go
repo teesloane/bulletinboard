@@ -9,11 +9,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"runtime"
 
 	"github.com/markbates/pkger"
+	"github.com/skratchdot/open-golang/open"
 )
 
 var validImage = map[string]bool{".jpg": true, ".png": true, ".webp": true, ".jpeg": true}
@@ -31,24 +30,6 @@ func loadFiles(files *[]string) filepath.WalkFunc {
 		}
 		return nil
 	}
-}
-
-// OpenInBrowser opens a local url in the browser by running a os-dependant command
-func OpenInBrowser(fileOrURL string) error {
-	var cmd string
-	var args []string
-
-	switch runtime.GOOS {
-	case "windows":
-		cmd = "cmd"
-		args = []string{"/c", "start"}
-	case "darwin":
-		cmd = "open"
-	default: // "linux", "freebsd", "openbsd", "netbsd"
-		cmd = "xdg-open"
-	}
-	args = append(args, fileOrURL)
-	return exec.Command(cmd, args...).Start()
 }
 
 type indexPage struct {
@@ -94,11 +75,12 @@ func main() {
 	fileServer := http.FileServer(http.Dir(folder))
 	staticServer := http.FileServer(pkger.Dir("/static"))
 	http.HandleFunc("/", index)
+	http.HandleFunc("/api/", SwitchPoint)
 	http.Handle("/images/", http.StripPrefix("/images", fileServer))
 	http.Handle("/static/", http.StripPrefix("/static/", staticServer))
 
 	// Launch and serve.
 	fmt.Print("Running bulletin board. Visit: http://localhost:8080.")
-	OpenInBrowser("http://localhost:8080")
+	open.Run("http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }

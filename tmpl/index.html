@@ -12,7 +12,19 @@
 <body>
 	<main class="main">
 		<!-- Loads tweakpane here -->
-		<section class="customize"></section>
+		<section class="customize">
+			<div class="tweakpane-mount"></div>
+			<hr />
+			<div class="key-commands">
+				<div class="key-commands-header">Key Commands:</div>
+				<div class="key-command-wrap"><span>Previous</span> <kbd>⬅</kbd></div>
+				<div class="key-command-wrap"><span>Next</span><kbd style="transform: scaleX(-1);">⬅</kbd></div>
+				<!-- <div class="key-command-wrap"><kbd>➡️</kbd><span>Next</span></div> <<<< unicode/font issues? -->
+				<div class="key-command-wrap"><span>Open folder/image locally</span><kbd>o</kbd></div>
+				<div class="key-command-wrap"><span>Toggle controls</span><kbd>c</kbd></div>
+			</div>
+		</section>
+
 		<button class="btn-icon btn-tools toggle-customize">
 			<img width="20" height="20" src="/static/tool.svg" alt="">
 		</button>

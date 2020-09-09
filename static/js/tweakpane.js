@@ -4,13 +4,19 @@ import { els, dqs } from './els.js'
 //  Tweakpane show/hide
 const customize = dqs(".customize")
 const customizeBtn = dqs(".toggle-customize")
-customizeBtn.addEventListener("click", (e) => {
+
+export function toggleTweakPane() {
   customize.classList.toggle("customize-open")
   customizeBtn.classList.toggle("btn-icon-active")
+}
+
+
+customizeBtn.addEventListener("click", (e) => {
+  toggleTweakPane()
 })
 
 const pane = new Tweakpane({
-  container: document.querySelector(".customize")
+  container: dqs(".tweakpane-mount")
 });
 
 const f1 = pane.addFolder({

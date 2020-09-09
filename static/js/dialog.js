@@ -1,4 +1,6 @@
 import { els, dqs } from './els.js'
+import api from './api.js'
+import {toggleTweakPane} from './tweakpane.js'
 
 const gridItemClass = 'item';
 
@@ -21,12 +23,14 @@ function closeDialog() {
   els.dialogContainer.classList.add('hide');
   els.closeDialog.classList.add("hide")
   els.dialogImg.src = ""
+  els.selectedImg = null
 }
 
 document.body.addEventListener('click', (e) => {
   if (
     e.target.tagName === 'IMG'
     && e.target.className === gridItemClass
+    && els.selectedImg === null
   ) {
     els.dialogContainer.classList.remove('hide');
     els.dialogImg.src = e.target.src
@@ -47,13 +51,19 @@ document.onkeydown = function (evt) {
   switch(evt.keyCode) {
     case 27:
       closeDialog()
-      break;
-    case 37:
+      break; 
+    case 37: // <-
       navigateDialog("left")
       break;
-    case 39:
+    case 39: // ->
       navigateDialog("right")
       break;
+    case 67: // "c"
+      toggleTweakPane()
+      break;
+    case 79: // "o"
+      api.getQS(`type=open-locally&imgURL=${els.dialogImg.src}`)
+      break
   }
 
 };
