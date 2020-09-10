@@ -7,9 +7,11 @@ import (
 	"html/template"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/markbates/pkger"
 	"github.com/skratchdot/open-golang/open"
@@ -17,6 +19,7 @@ import (
 
 var validImage = map[string]bool{".jpg": true, ".png": true, ".webp": true, ".jpeg": true}
 var folder string
+var port int
 
 // Load list of images in directory.
 func loadFiles(files *[]string) filepath.WalkFunc {
@@ -34,6 +37,7 @@ func loadFiles(files *[]string) filepath.WalkFunc {
 
 type indexPage struct {
 	Images []string
+	Port   int
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
@@ -55,7 +59,7 @@ func index(w http.ResponseWriter, req *http.Request) {
 		log.Fatal(err)
 	}
 
-	p := indexPage{Images: imgFiles}
+	p := indexPage{Images: imgFiles, Port: port}
 	temp.Execute(w, p)
 }
 
@@ -80,7 +84,16 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", staticServer))
 
 	// Launch and serve.
-	fmt.Print("Running bulletin board. Visit: http://localhost:8080.")
-	open.Run("http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+
+	// We manually create our listener so we can get the random port
+	listener, err := net.Listen("tcp", ":0") // ":0" gets first available port.
+	if err != nil {
+		panic(err)
+	}
+	port = listener.Addr().(*net.TCPAddr).Port
+	url := "http://localhost:" + strconv.Itoa(port)
+
+	fmt.Print("Running bulletin board. Visit: " + url)
+	open.Run(url)
+	panic(http.Serve(listener, nil))
 }

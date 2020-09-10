@@ -7,17 +7,19 @@
 	<title>Bulletin Board</title>
 	<link rel="stylesheet" href="/static/styles.css">
 	<script src="/static/vendor/tweakpane-1.5.4.min.js"></script>
+	<script>window.PORT = {{.Port }}</script>
 </head>
 
 <body>
-		{{ if not .Images}}
-		<main class="main-empty">
-			<div class="py1">No images to display.</div>
-			<small class="py1">Make sure you run <code>bulletinboard</code> in a folder that has a few image files.</small>
-			<small class="py1">You take care now.</small>
-		</main>
-		{{else}}
-	<main class="main">
+	{{ if not .Images}}
+	<main class="main-empty">
+		<div class="py1">No images to display.</div>
+		<small class="py1">Make sure you run <code>bulletinboard</code> in a folder that has a few image files.</small>
+		<small class="py1">You take care now.</small>
+	</main>
+	{{else}}
+	<div class="loading">Loading</div>
+	<main class="main hide">
 		<!-- Loads tweakpane here -->
 		<section class="customize">
 			<div class="tweakpane-mount"></div>
@@ -45,7 +47,15 @@
 			<img class="item" src="/images/{{.}}"></img>
 			{{end}}
 		</section>
+		<footer class="hide"
+			style="margin-top: 32px; display: flex; justify-items: center; background: #333; color: #fafafa; flex: 1; width: 100%; padding: 8px; justify-content: center; text-transform: uppercase; letter-spacing: 1px; max-height: 48px; ">
+			Built by &nbsp;
+			<a target="_blank" style="color: white; text-decoration: none; font-weight: bold"
+				href="https://theiceshelf.com">The Ice Shelf.</a>
+		</footer>
+
 	</main>
+
 	{{end}}
 
 	<div role="dialog" class="dialog-container hide">

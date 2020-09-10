@@ -1,9 +1,28 @@
-export const dqs = (s) => document.querySelector(s)
+export const dqs = s => document.querySelector(s);
 
 export var els = {
+  main: dqs(".main"),
+  loading: dqs(".loading"),
   grid: document.querySelector(".grid"),
-  dialogContainer: dqs('.dialog-container'),
+  footer: document.getElementsByName("footer"),
+  dialogContainer: dqs(".dialog-container"),
   dialogImg: dqs(".dialogImg"),
+  btnCustomize: dqs(".toggle-customize"),
   selectedImg: null,
-  closeDialog: dqs('.toggle-close')
+  closeDialog: dqs(".toggle-close")
+};
+
+export function hide() {
+  console.log(arguments);
+  for (var i = 0; i < arguments.length; i++) {
+    var a = arguments;
+    a[i].classList && a[i].classList.add("hide");
+  }
+}
+
+export function show() {
+  for (var i = 0; i < arguments.length; i++) {
+    var a = arguments;
+    a[i].classList && a[i].classList.remove("hide");
+  }
 }

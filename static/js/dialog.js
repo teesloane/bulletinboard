@@ -1,8 +1,8 @@
-import { els, dqs } from './els.js'
-import api from './api.js'
-import {toggleTweakPane} from './tweakpane.js'
+import { els, dqs } from "./els.js";
+import api from "./api.js";
+import { toggleTweakPane } from "./tweakpane.js";
 
-const gridItemClass = 'item';
+const gridItemClass = "item";
 
 /**
  * Navigates images (called by arrow keys)
@@ -11,60 +11,57 @@ const gridItemClass = 'item';
 function navigateDialog(dir) {
   var ns;
   if (dir == "left") {
-    ns = els.selectedImg.previousElementSibling
+    ns = els.selectedImg.previousElementSibling;
   } else {
-    ns = els.selectedImg.nextElementSibling
+    ns = els.selectedImg.nextElementSibling;
   }
-  els.dialogImg.src = ns.src
-  els.selectedImg = ns
+  els.dialogImg.src = ns.src;
+  els.selectedImg = ns;
 }
 
 function closeDialog() {
-  els.dialogContainer.classList.add('hide');
-  els.closeDialog.classList.add("hide")
-  els.dialogImg.src = ""
-  els.selectedImg = null
+  els.dialogContainer.classList.add("hide");
+  els.closeDialog.classList.add("hide");
+  els.dialogImg.src = "";
+  els.selectedImg = null;
 }
 
-document.body.addEventListener('click', (e) => {
+document.body.addEventListener("click", e => {
   if (
-    e.target.tagName === 'IMG'
-    && e.target.className === gridItemClass
-    && els.selectedImg === null
+    e.target.tagName === "IMG" &&
+    e.target.className === gridItemClass &&
+    els.selectedImg === null
   ) {
-    els.dialogContainer.classList.remove('hide');
-    els.dialogImg.src = e.target.src
-    els.selectedImg = e.target
-    els.closeDialog.classList.remove("hide")
+    els.dialogContainer.classList.remove("hide");
+    els.dialogImg.src = e.target.src;
+    els.selectedImg = e.target;
+    els.closeDialog.classList.remove("hide");
   } else {
-    closeDialog()
+    closeDialog();
   }
 });
 
-els.closeDialog.addEventListener('click', () => {
-  closeDialog()
+els.closeDialog.addEventListener("click", () => {
+  closeDialog();
 });
 
-document.onkeydown = function (evt) {
+document.onkeydown = function(evt) {
   evt = evt || window.event;
-  console.log(evt.keyCode)
-  switch(evt.keyCode) {
+  switch (evt.keyCode) {
     case 27:
-      closeDialog()
-      break; 
+      closeDialog();
+      break;
     case 37: // <-
-      navigateDialog("left")
+      navigateDialog("left");
       break;
     case 39: // ->
-      navigateDialog("right")
+      navigateDialog("right");
       break;
     case 67: // "c"
-      toggleTweakPane()
+      toggleTweakPane();
       break;
     case 79: // "o"
-      api.getQS(`type=open-locally&imgURL=${els.dialogImg.src}`)
-      break
+      api.getQS(`type=open-locally&imgURL=${els.dialogImg.src}`);
+      break;
   }
-
 };
-

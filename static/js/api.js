@@ -1,6 +1,6 @@
 // See: api.go/SwitchPoint
 function getQS(qs) {
-  fetch(`http://localhost:8080/api?${qs}`) // TODO - handle for different ports.
+  fetch(`http://localhost:${window.PORT}/api?${qs}`);
 }
 
-export default {getQS}
+export default { getQS };
