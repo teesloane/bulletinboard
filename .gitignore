@@ -2,3 +2,4 @@
 __debug_bin
 bulletinboard
 .DS_Store
+build/

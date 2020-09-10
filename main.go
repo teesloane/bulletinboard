@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -20,16 +21,24 @@ import (
 var validImage = map[string]bool{".jpg": true, ".png": true, ".webp": true, ".jpeg": true}
 var folder string
 var port int
+var recursive bool
+
+const version = "0.0.1"
 
 // Load list of images in directory.
-func loadFiles(files *[]string) filepath.WalkFunc {
+func loadFiles(imgFiles *[]string) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fileExt := filepath.Ext(path)
+		imgPath, err := filepath.Rel(folder, path)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fileExt := filepath.Ext(imgPath)
 		if validImage[fileExt] {
-			*files = append(*files, info.Name())
+			*imgFiles = append(*imgFiles, imgPath)
 		}
 		return nil
 	}
@@ -43,20 +52,34 @@ type indexPage struct {
 func index(w http.ResponseWriter, req *http.Request) {
 	var imgFiles []string
 
+	// Load the pkger'd template file
 	buf := bytes.NewBuffer(nil)
 	f, _ := pkger.Open("/tmpl/index.html")
 	io.Copy(buf, f)
 	f.Close()
 	s := string(buf.Bytes())
-
 	temp, err := template.New("index").Parse(s)
 	if err != nil {
 		log.Fatal("failed to get layout: ", err)
 	}
 
-	err = filepath.Walk(folder, loadFiles(&imgFiles))
-	if err != nil {
-		log.Fatal(err)
+	// Load the image files to be served.
+	if recursive {
+		err = filepath.Walk(folder, loadFiles(&imgFiles))
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		files, err := ioutil.ReadDir(folder)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, file := range files {
+			fileExt := filepath.Ext(file.Name())
+			if validImage[fileExt] {
+				imgFiles = append(imgFiles, file.Name())
+			}
+		}
 	}
 
 	p := indexPage{Images: imgFiles, Port: port}
@@ -70,10 +93,20 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	// parse flag and overwrite folder if it exists.
-	bbPath := flag.String("path", folder, "Custom path to load images from.")
+
+	// Flags
+	flag.StringVar(&folder, "path", folder, "Custom path to load images from.")
+	flag.BoolVar(&recursive, "recursive", false, "Load image in any subdirectories.")
+	ver := flag.Bool("v", false, "print application version")
 	flag.Parse()
-	folder = *bbPath
+	if *ver {
+		fmt.Println(version)
+		os.Exit(0)
+	}
+	if _, err := os.Stat(folder); os.IsNotExist(err) {
+		fmt.Println("❗️ The folder you specified does not exist: ", folder)
+		os.Exit(1)
+	}
 
 	// Setup file servers and handlers.
 	fileServer := http.FileServer(http.Dir(folder))
@@ -84,12 +117,12 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", staticServer))
 
 	// Launch and serve.
-
 	// We manually create our listener so we can get the random port
 	listener, err := net.Listen("tcp", ":0") // ":0" gets first available port.
 	if err != nil {
 		panic(err)
 	}
+
 	port = listener.Addr().(*net.TCPAddr).Port
 	url := "http://localhost:" + strconv.Itoa(port)
 

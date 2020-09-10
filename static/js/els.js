@@ -13,7 +13,6 @@ export var els = {
 };
 
 export function hide() {
-  console.log(arguments);
   for (var i = 0; i < arguments.length; i++) {
     var a = arguments;
     a[i].classList && a[i].classList.add("hide");
