@@ -11,6 +11,30 @@ main {
   display: flex;
 }
 
+.main-empty {
+  display: flex;
+  flex-direction: column;
+  color: #555;
+  margin-top: -48px;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #555;
+  padding: 32px;
+  line-height: 24px;
+  max-width: 400px;
+}
+
+code {
+  background: rgb(75, 75, 75);
+  color: rgb(249, 249, 249);
+  padding: 4px;
+  border-radius: 1px;
+  border: 1px solid #444d56;
+
+}
+
+.py1 { padding: 16px 0}
+
 .grid {
   column-count: 4;
   column-gap: 0.5em;

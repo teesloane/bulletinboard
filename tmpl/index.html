@@ -10,6 +10,13 @@
 </head>
 
 <body>
+		{{ if not .Images}}
+		<main class="main-empty">
+			<div class="py1">No images to display.</div>
+			<small class="py1">Make sure you run <code>bulletinboard</code> in a folder that has a few image files.</small>
+			<small class="py1">You take care now.</small>
+		</main>
+		{{else}}
 	<main class="main">
 		<!-- Loads tweakpane here -->
 		<section class="customize">
@@ -39,6 +46,7 @@
 			{{end}}
 		</section>
 	</main>
+	{{end}}
 
 	<div role="dialog" class="dialog-container hide">
 		<div class="dialog">
