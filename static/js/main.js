@@ -17,7 +17,6 @@ function handleLoad() {
       )
   ).then(() => {
     // some arbitrary timeouts for smoother load
-    console.log("done loading")
     hide(els.loading);
     show(els.main, els.footer, els.btnCustomize);
     setTimeout(() => { els.grid.style.opacity = 1; }, 1000);
