@@ -5,7 +5,7 @@
 
 ## Usage
 
-- Download the latest release from the [releases]() page. 
+- Download the latest release from the [releases](https://github.com/theiceshelf/bulletinboard/releases) page. 
 - Move the `bulletinboard` binary into your path if you want to run it from any directory.
 - Run `bulletinboard` in a folder with images in it, or alternatively;
   - Run `bulletinboard -path <path_to_folder_of_images>`
