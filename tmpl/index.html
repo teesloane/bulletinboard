@@ -6,19 +6,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bulletin Board</title>
 	<link rel="stylesheet" href="/static/styles.css">
+	<link rel="icon" type="image/png" href="/static/favicon.png"/>
 	<script src="/static/vendor/tweakpane-1.5.4.min.js"></script>
 	<script>window.PORT = {{.Port }}</script>
 </head>
 
 <body>
 	{{ if not .Images}}
-	<main class="main-empty">
-		<div class="py1">No images to display.</div>
-		<small class="py1">Make sure you run <code>bulletinboard</code> in a folder that has a few image files.</small>
-		<small class="py1">You take care now.</small>
+	<main class="main-empty fade-in">
+		<div class="py1">No images found in: <code>{{.Folder}}</code></div>
+		<div> Ensure that <code>bulletinboard</code> is run in a folder that contains a few image files.</div>
 	</main>
 	{{else}}
-	<div class="loading">Loading</div>
+	<div class="loading"></div>
 	<main class="main hide">
 		<!-- Loads tweakpane here -->
 		<section class="customize">
@@ -42,13 +42,15 @@
 			<img width="20" height="20" src="/static/x-circle.svg" alt="">
 		</button>
 
-		<section class="grid">
-			{{range .Images}}
-			<img class="item" src="/images/{{.}}"></img>
-			{{end}}
-		</section>
+		<div class="grid-wrap">
+			<section class="grid">
+				{{range .Images}}
+				<img class="item" src="/images/{{.}}"></img>
+				{{end}}
+			</section>
+		</div>
 		<footer class="hide"
-			style="margin-top: 32px; display: flex; justify-items: center; background: #333; color: #fafafa; flex: 1; width: 100%; padding: 8px; justify-content: center; text-transform: uppercase; letter-spacing: 1px; max-height: 48px; ">
+			style="display: flex; align-items: center; justify-items: center; background: #333; color: #fafafa; flex: 1; width: 100%; padding: 8px; justify-content: center; text-transform: uppercase; letter-spacing: 1px; max-height: 48px; ">
 			Built by &nbsp;
 			<a target="_blank" style="color: white; text-decoration: none; font-weight: bold"
 				href="https://theiceshelf.com">The Ice Shelf.</a>

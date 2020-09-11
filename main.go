@@ -47,6 +47,7 @@ func loadFiles(imgFiles *[]string) filepath.WalkFunc {
 type indexPage struct {
 	Images []string
 	Port   int
+	Folder string
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
@@ -82,7 +83,7 @@ func index(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	p := indexPage{Images: imgFiles, Port: port}
+	p := indexPage{Images: imgFiles, Port: port, Folder: folder}
 	temp.Execute(w, p)
 }
 

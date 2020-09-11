@@ -6,7 +6,7 @@ const customizeBtn = dqs(".toggle-customize");
 
 export function toggleTweakPane() {
   customize.classList.toggle("customize-open");
-  customizeBtn.classList.toggle("btn-icon-active");
+  customizeBtn.classList.toggle("btn-icon-toggled");
 }
 
 customizeBtn.addEventListener("click", e => {

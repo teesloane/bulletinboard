@@ -1,5 +1,5 @@
 run: 
-	go run main.go api.go -path ~/Desktop/futur_insp
+	go run main.go api.go -path ~/Downloads/ex
 pack:
 	bin/pkger
 

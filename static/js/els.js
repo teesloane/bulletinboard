@@ -3,8 +3,8 @@ export const dqs = s => document.querySelector(s);
 export var els = {
   main: dqs(".main"),
   loading: dqs(".loading"),
-  grid: document.querySelector(".grid"),
-  footer: document.getElementsByName("footer"),
+  grid: dqs(".grid"),
+  footer: dqs("footer"),
   dialogContainer: dqs(".dialog-container"),
   dialogImg: dqs(".dialogImg"),
   btnCustomize: dqs(".toggle-customize"),
