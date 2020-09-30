@@ -13,6 +13,13 @@
 
 ## Development
 
+**Develop:**
+
 - Requirements: `>= go 1.14`.
 - Clone the repository.
 - Run `make run`.
+
+**Build:**
+
+- Run `make release-local` (create a binary and move it to usr/local/bin)
+- Run `make release` (create binarys for mac, windows, linux) and move to the`/build` folder.

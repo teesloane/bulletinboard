@@ -71,6 +71,7 @@ main {
   padding: 32px;
   line-height: 24px;
   max-width: 400px;
+  justify-content: center;
 }
 
 code {

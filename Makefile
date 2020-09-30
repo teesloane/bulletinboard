@@ -1,5 +1,5 @@
 run: 
-	go run main.go api.go -path ~/Downloads/ex
+	go run main.go api.go -path ~/Desktop/ex
 pack:
 	bin/pkger
 
