@@ -1,5 +1,6 @@
-##  (2020-09-30)
+## <small>0.0.2 (2020-09-30)</small>
 
+* Add: changelog ([463b7c3](https://github.com/teesloane/bulletinboard/commit/463b7c3))
 * Fix(styling): center empty state. ([75092b4](https://github.com/teesloane/bulletinboard/commit/75092b4))
 * Docs: link to releases ([a94bb52](https://github.com/teesloane/bulletinboard/commit/a94bb52))
 
