@@ -18,7 +18,7 @@ import (
 	"github.com/skratchdot/open-golang/open"
 )
 
-var validImage = map[string]bool{".jpg": true, ".png": true, ".webp": true, ".jpeg": true}
+var validImage = map[string]bool{".jpg": true, ".png": true, ".webp": true, ".jpeg": true, ".JPG": true}
 var folder string
 var port int
 var recursive bool
